@@ -2,7 +2,7 @@
 title: New Project
 ---
 
-Once you've installed BuckleScript from the previous section, you can generate a lightweight project template:
+Once you have installed BuckleScript (as described in the [previous section](https://bucklescript.github.io/docs/en/installation)), you can generate a lightweight project template:
 
 ```sh
 bsb -init my-new-project
@@ -14,7 +14,7 @@ Alternatively, to start a new [Reason](https://reasonml.github.io) project:
 bsb -init my-new-project -theme basic-reason
 ```
 
-To compile & run the project you just created:
+To compile and run the project you just created:
 
 ```sh
 cd my-new-project
@@ -22,9 +22,9 @@ npm run build
 node src/demo.bs.js
 ```
 
-And that's it! You've just built the project once and ran the JS output. Feel free to inspect the js output, add a few files in `my-new-project/src`, etc. Hopefully we've delivered on our promise of being a lean toolchain with clean output =).
+And that's it! You have just built the project once and ran the JS output. Feel free to inspect the JS output, add a few files in `my-new-project/src`, etc. Hopefully we have delivered on our promise of being a lean toolchain with clean output =).
 
-We'll explain `bsb`, the build system called by the above `npm run build`, in a later section.
+We will explain `bsb`, the build system called in the above `npm run build` command, in a later section.
 
 ## Editor Integration
 
