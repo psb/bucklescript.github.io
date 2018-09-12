@@ -14,7 +14,7 @@ The above section might sound a bit buzzword-y; here is how we've designed Buckl
 
 ### Variables
 
-Most variables' name compile to clean JS names. `hello` compiles to `hello`, whereas other compilers might turn it to e.g. `__$INTERNAL$hello$1`. Clean names (i.e. "no name mangling") help debugging and one-off experiments. We've seen emergency fixes where a team mate less familiar with BuckleScript and Reason comes into a file and drop a raw JS code block in the middle of a BuckleScript file. It's reassuring to know that last-resort escape hatches are possible.
+Most variables' name compile to clean JS names. `hello` compiles to `hello`, whereas other compilers might turn it into `__$INTERNAL$hello$1`, for example. Clean names (i.e., no name mangling) help debugging and one-off experiments. We have seen emergency fixes where a team mate less familiar with BuckleScript and Reason comes into a file and drops a raw JS code block in the middle of a BuckleScript file. It's reassuring to know that last-resort escape hatches are possible.
 
 ### Data Structures
 
@@ -34,9 +34,9 @@ Roughly compiles to the JS code:
 var messages = ["hello", "world", "how", "are", "you"]
 ```
 
-There is zero mental and performance overhead while using such value. Naturally, the value on the BuckleScript side is automatically typed to be an array of strings.
+There is zero mental and performance overhead while using such a value. Naturally, the value on the BuckleScript side is automatically typed to be an array of strings.
 
-This behavior doesn't hold for complex data structures; the dedicated sections for each offer more info.
+This behavior doesn't hold for complex data structures; the dedicated sections for each offer more information.
 
 ### Functions
 
@@ -44,23 +44,23 @@ In most cases, you can directly call a JS function from BS, and vice-versa! Thes
 
 ### Module/File
 
-Every `let` declarations in a BS file is exported by default and usable from JS. For the other way around, you can declare in a BS file what JS module you want to use inside BS. We can both output and consume CommonJS, ES6 and AMD modules.
+Every `let` declaration in a BS file is exported by default and is usable from JS. For the other way around, you can declare in a BS file what JS module you want to use inside BS. We can both output and consume CommonJS, ES6 and AMD modules.
 
-The generated output is clean enough that it could be passed as (slightly badly indented) hand-written JavaScript code. Try a few snippets in our playground!
+The generated output is clean enough that it can be passed as (slightly badly indented) hand-written JavaScript code. Try a few snippets in our playground!
 
 <!-- TODO: add default export explaination >
 <!-- TODO: playground link -->
 
 ### Build system
 
-BS comes with a lightning-fast (fastest?) build system. It starts up in a few **milliseconds** and shuts down as fast. Incremental compilation is **two digits of milliseconds**. This allows the build system to be inserted invisibly into your whole JS build pipeline without embarrassing it. Unless your JS build pipeline is already embarrassingly slow. That's ok.
+BS comes with a lightning-fast (fastest?) build system. It starts up in a few **milliseconds** and shuts down just as fast. Incremental compilation is in the **tens of milliseconds** range. This allows the build system to be inserted invisibly into your whole JS build pipeline without embarrassing it. (Unless your JS build pipeline is already embarrassingly slow; that's ok.)
 
-**1** BS file compiles to **1** JS file. The build can be configured to generate JS files alongside or outside your `ml`/`re` source files. This means you don't have to ask the infra team's help in trying out BuckleScript at your company; simply generate the JS files and check them in. From the perspective of the rest of the compilation pipeline, it's as if you've written these JS files by hand. This is how [Messenger successfully introduced Reason into the codebase](https://reasonml.github.io/blog/2017/09/08/messenger-50-reason.html).
+**1** BS file compiles to **1** JS file. The build system can be configured to generate JS files either alongside or outside of your `ml`/`re` source files. This means you don't have to ask the infrastructure team's help in trying out BuckleScript at your company; simply generate the JS files and check them in. From the perspective of the rest of the compilation pipeline, it's as if you've written these JS files by hand. This is how [Messenger successfully introduced Reason into the codebase](https://reasonml.github.io/blog/2017/09/08/messenger-50-reason.html).
 
 ### Package Management
 
-We use NPM and Yarn. Since the generated output is clean enough, you can publish them at NPM `prepublishOnly` time and remove all trace of BuckleScript beforehand. The consumer wouldn't even know you wrote in BS, not JS! Check your `node_modules` right now; you might have been using some transitive BS code without knowing!
+We use NPM and Yarn. Since the generated output is clean enough, you can publish them at NPM `prepublishOnly` time and remove all trace of BuckleScript beforehand. The consumer would not even know that you wrote it in BS and not JS! Check your `node_modules` right now; you might have been using some transitive BS code without knowing!
 
 ## Conclusion
 
-Hopefully you can see from the previous overview that we've poured _lots_ of thoughts into simplicity, familiarity and performance in the interop architecture. The next few sections describe each of these points in detail.
+Hopefully you can see that we have poured _lots_ of thought into the simplicity, familiarity and performance of the interop architecture. The next few sections describe each of these points in detail.
