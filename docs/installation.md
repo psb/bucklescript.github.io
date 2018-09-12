@@ -4,7 +4,7 @@ title: Installation
 
 **Prerequisite**: either NPM (comes with [node](https://nodejs.org/en/)) or [Yarn](https://yarnpkg.com/en/).
 
-If you'd like to install BuckleScript globally, do:
+If you would like to install BuckleScript globally, do:
 
 ```sh
 yarn global add bs-platform
@@ -16,7 +16,7 @@ or
 npm install -g bs-platform
 ```
 
-This gives you a few globally exposed commands you can run, described later. But usually, you'd install the project locally:
+This gives you a few globally exposed commands you can run, which are described later. But usually, you'd install the project locally:
 
 ```sh
 yarn add --dev bs-platform
@@ -34,7 +34,7 @@ The commands that are exposed are:
 
 ## Alternatives (Power Users)
 
-### Install From Source, Through NPM/Yarn
+### Install From Source - With NPM/Yarn
 
 **Prerequisite**: either npm or yarn, plus the standard C toolchain.
 
@@ -44,7 +44,7 @@ cd bucklescript
 npm install
 ```
 
-### Install From Source, Without NPM/Yarn
+### Install From Source - Without NPM/Yarn
 
 **Prerequisite**: the standard C toolchain (gcc, make).
 
@@ -67,6 +67,6 @@ cd ../../
 make world
 ```
 
-At the end, you should have a binary called `bsc.exe` under `jscomp/bin` directory, which you can add to your `$PATH`. You can also set an environment variable pointing to the standard library, e.g. `BSC_LIB=/path/to/jscomp/stdlib`, for ease of use.
+At the end, you should have a binary called `bsc.exe` under the `jscomp/bin` directory, which you can add to your `$PATH`. You can also set an environment variable pointing to the standard library, e.g. `BSC_LIB=/path/to/jscomp/stdlib`, for ease of use.
 
-**Warning:** the built compiler is not relocatable out of box, don’t move it around unless you know what you're doing!
+**Warning:** the built compiler is not relocatable out of the box, do not move it around unless you know what you are doing!
