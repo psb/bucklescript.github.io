@@ -25,7 +25,7 @@ Button.defaultProps = {
   target: "_self"
 };
 const pre = "```";
-const codeExample =`${pre}ocaml
+const codeExample = `${pre}ocaml
 let result = Js.(
   [|1; 2; 3; 4|]
   |> Array.filter (fun x -> x > 2)
@@ -33,7 +33,7 @@ let result = Js.(
   |> Array.reduce (fun x y -> x + y) 0
 )
 ${pre}`;
-const codeExampleReason =`${pre}reason
+const codeExampleReason = `${pre}reason
 let result = Js.(
   [|1, 2, 3, 4|]
   |> Array.filter(x => x > 2)
@@ -81,7 +81,7 @@ class HomeSplash extends React.Component {
 
         <div id="redirectBanner">
           <div>
-            Hello! This particular page hash has moved to <a id="redirectLink"/>.
+            Hello! This particular page hash has moved to <a id="redirectLink" />.
             Please update the URLs to reflect it. Thanks!
           </div>
         </div>
@@ -133,15 +133,15 @@ class Index extends React.Component {
               contents={[
                 {
                   title: "Lean Developer Experience",
-                  content: "Simple, small and blazing fast build workflow. No more configuration debugging!",
+                  content: "Simple, small and blazingly fast build workflow. No more configuration debugging!",
                 },
                 {
-                  title: "The Whole JavaScript Ecosystem",
-                  content: "**Readable** JS output + comprehensive support for communicating with existing code.",
+                  title: "All The JavaScript Ecosystem",
+                  content: "**Readable** JS output and comprehensive support for communicating with existing code.",
                 },
                 {
                   title: "Solid, Stable & Cross-platform",
-                  content: "BuckleScript is backed by [OCaml](http://ocaml.org). Decades of **type system** research and compiler engineering.",
+                  content: "BuckleScript is backed by [OCaml](http://ocaml.org), and thus decades of **type system** research and compiler engineering.",
                 },
               ]}
               layout="threeColumn"
@@ -173,7 +173,7 @@ class Index extends React.Component {
                   content: "",
                 }))}
               />
-          </div>
+            </div>
           </Container>
 
           <div className="productShowcaseSection paddingBottom">

@@ -79,7 +79,7 @@ const examples = [
 
 const siteConfig = {
   title: "BuckleScript",
-  tagline: "Write safer and simpler code in OCaml & Reason, compile to JavaScript.",
+  tagline: "Write safer and simpler code in OCaml & Reason, and compile it to JavaScript.",
   url: "https://bucklescript.github.io",
   editUrl: "https://github.com/bucklescript/bucklescript.github.io/tree/source/docs/",
   translationRecruitingLink: "https://crowdin.com/project/bucklescript",
@@ -89,7 +89,7 @@ const siteConfig = {
   projectName: "bucklescript.github.io",
   headerLinks: [
     { doc: "installation", label: "Docs" },
-    { doc: "playground", label: "Try"},
+    { doc: "playground", label: "Try" },
     { doc: "stdlib-overview", label: "API" },
     { doc: "community", label: "Community" },
     { blog: true, label: "Blog" },
@@ -114,32 +114,32 @@ const siteConfig = {
   cleanUrl: true,
   highlight: {
     theme: 'atom-one-light',
-    hljs: function(hljs) {
-      hljs.registerLanguage('reason', function(hljs) {
+    hljs: function (hljs) {
+      hljs.registerLanguage('reason', function (hljs) {
         var SWIFT_KEYWORDS = {
-            forDocGrammarHighlighting: 'ifTrue ifFalse expression testCondition startVal endVal typeConstraint typeName typeFactoryName argOneType argTwoType finalArgType typeStructure typeParam typeArg1 typeArg2 typeParam1 typeParam2 argOne argTwo finalArg argument argumentType expressionType identifier',
-            keyword: 'class deinit enum extension func import init rec class let pub pri val inherit ref mutable protocol static ' +
-              'module include struct subscript type typealias var break case continue default do ' +
-              'else fallthrough if in of for to downto return switch where while as dynamicType ' +
-              'is new super self Self Type __COLUMN__ __FILE__ __FUNCTION__ ' +
-              '__LINE__ associativity didSet get infix inout left mutating none ' +
-              'nonmutating operator override postfix precedence prefix => right set '+
-              'unowned unowned safe unsafe weak willSet',
-            literal: 'true false nil',
-            built_in: 'abs advance alignof alignofValue assert bridgeFromObjectiveC ' +
-              'bridgeFromObjectiveCUnconditional bridgeToObjectiveC ' +
-              'bridgeToObjectiveCUnconditional c contains count countElements ' +
-              'countLeadingZeros debugPrint debugPrintln distance dropFirst dropLast dump ' +
-              'encodeBitsAsWords enumerate equal filter find getBridgedObjectiveCType ' +
-              'getVaList indices insertionSort isBridgedToObjectiveC ' +
-              'isBridgedVerbatimToObjectiveC isUniquelyReferenced join ' +
-              'lexicographicalCompare map max maxElement min minElement numericCast ' +
-              'partition posix print println quickSort reduce reflect reinterpretCast ' +
-              'reverse roundUpToAlignment sizeof sizeofValue sort split startsWith strideof ' +
-              'strideofValue swap swift toString transcode underestimateCount ' +
-              'unsafeReflect withExtendedLifetime withObjectAtPlusZero withUnsafePointer ' +
-              'withUnsafePointerToObject withUnsafePointers withVaList'
-          };
+          forDocGrammarHighlighting: 'ifTrue ifFalse expression testCondition startVal endVal typeConstraint typeName typeFactoryName argOneType argTwoType finalArgType typeStructure typeParam typeArg1 typeArg2 typeParam1 typeParam2 argOne argTwo finalArg argument argumentType expressionType identifier',
+          keyword: 'class deinit enum extension func import init rec class let pub pri val inherit ref mutable protocol static ' +
+            'module include struct subscript type typealias var break case continue default do ' +
+            'else fallthrough if in of for to downto return switch where while as dynamicType ' +
+            'is new super self Self Type __COLUMN__ __FILE__ __FUNCTION__ ' +
+            '__LINE__ associativity didSet get infix inout left mutating none ' +
+            'nonmutating operator override postfix precedence prefix => right set ' +
+            'unowned unowned safe unsafe weak willSet',
+          literal: 'true false nil',
+          built_in: 'abs advance alignof alignofValue assert bridgeFromObjectiveC ' +
+            'bridgeFromObjectiveCUnconditional bridgeToObjectiveC ' +
+            'bridgeToObjectiveCUnconditional c contains count countElements ' +
+            'countLeadingZeros debugPrint debugPrintln distance dropFirst dropLast dump ' +
+            'encodeBitsAsWords enumerate equal filter find getBridgedObjectiveCType ' +
+            'getVaList indices insertionSort isBridgedToObjectiveC ' +
+            'isBridgedVerbatimToObjectiveC isUniquelyReferenced join ' +
+            'lexicographicalCompare map max maxElement min minElement numericCast ' +
+            'partition posix print println quickSort reduce reflect reinterpretCast ' +
+            'reverse roundUpToAlignment sizeof sizeofValue sort split startsWith strideof ' +
+            'strideofValue swap swift toString transcode underestimateCount ' +
+            'unsafeReflect withExtendedLifetime withObjectAtPlusZero withUnsafePointer ' +
+            'withUnsafePointerToObject withUnsafePointers withVaList'
+        };
 
         var TYPE = {
           className: 'type',
@@ -160,9 +160,9 @@ const siteConfig = {
           contains: [] // assigned later
         };
         var NUMBERS = {
-            className: 'number',
-            begin: '\\b([\\d_]+(\\.[\\deE_]+)?|0x[a-fA-F0-9_]+(\\.[a-fA-F0-9p_]+)?|0b[01_]+|0o[0-7_]+)\\b',
-            relevance: 0
+          className: 'number',
+          begin: '\\b([\\d_]+(\\.[\\deE_]+)?|0x[a-fA-F0-9_]+(\\.[a-fA-F0-9p_]+)?|0b[01_]+|0o[0-7_]+)\\b',
+          relevance: 0
         };
         var QUOTE_STRING_MODE = hljs.inherit(hljs.QUOTE_STRING_MODE, {
           contains: [SUBST, hljs.BACKSLASH_ESCAPE]
@@ -199,7 +199,7 @@ const siteConfig = {
                     NUMBERS,
                     QUOTE_STRING_MODE,
                     hljs.C_BLOCK_COMMENT_MODE,
-                    {begin: ':'} // relevance booster
+                    { begin: ':' } // relevance booster
                   ],
                   illegal: /["]/
                 }
@@ -213,15 +213,15 @@ const siteConfig = {
               end: '\\{',
               excludeEnd: true,
               contains: [
-                hljs.inherit(hljs.TITLE_MODE, {begin: /[A-Za-z$_][0-9A-Za-z$_]*/})
+                hljs.inherit(hljs.TITLE_MODE, { begin: /[A-Za-z$_][0-9A-Za-z$_]*/ })
               ]
             },
             {
               className: 'preprocessor', // @attributes
               begin: '(@assignment|@class_protocol|@exported|@final|@lazy|@noreturn|' +
-                        '@NSCopying|@NSManaged|@objc|@optional|@required|@auto_closure|' +
-                        '@noreturn|@IBAction|@IBDesignable|@IBInspectable|@IBOutlet|' +
-                        '@infix|@prefix|@postfix)'
+                '@NSCopying|@NSManaged|@objc|@optional|@required|@auto_closure|' +
+                '@noreturn|@IBAction|@IBDesignable|@IBInspectable|@IBOutlet|' +
+                '@infix|@prefix|@postfix)'
             }
           ]
         };
