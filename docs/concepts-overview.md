@@ -2,17 +2,17 @@
 title: Concepts Overview
 ---
 
-Before starting the next few sections, here are a helpful things to know:
+Before starting the next few sections, here are a few helpful things to know:
 
 ## OCaml
 
-This is the backing of BuckleScript. BuckleScript is a fork of OCaml, specifically `v4.02.3` (upgrade impending!). This doc site assumes basic knowledge of OCaml; you can learn OCaml through [Real World OCaml](https://realworldocaml.org/) or, if you're learning Reason anyway, start with the [Reason site](https://reasonml.github.io/).
+This is the backing of BuckleScript. BuckleScript is a fork of OCaml, specifically `v4.02.3` (upgrade impending!). This documentation site assumes you have a basic knowledge of OCaml; you can learn OCaml through [Real World OCaml](https://realworldocaml.org/) or, if you are learning Reason anyway, start with the [Reason site](https://reasonml.github.io/).
 
-**This documentation site will mostly cover just the extra bits we've added to OCaml to enable good JS interoperability**.
+**This documentation site will mostly cover just the extra bits we have added to OCaml to enable good JS interoperability**.
 
 ## Reason
 
-An alternative syntax for OCaml that's more familiar to JS programmers and reduces the learning overhead a bit. Reason works with OCaml, since apart from the syntax they share most other things. This also means Reason works with BuckleScript. The latter has some first-class support for some other utilities of Reason.
+An alternative syntax for OCaml that is more familiar to JS programmers and reduces the learning overhead a bit. Reason works with OCaml since, apart from the syntax, they share most other things. This also means Reason works with BuckleScript. The latter has some first-class support for some other utilities of Reason.
 
 ## OPAM
 
@@ -20,10 +20,10 @@ This is OCaml's official package manager. Since BuckleScript uses NPM and Yarn, 
 
 ## External/Interop/FFI
 
-These are all jargon for working with BuckleScript <-> JavaScript.
+These are all jargon terms for working with BuckleScript <-> JavaScript interoperability.
 
 External: in the context of BuckleScript, one of the primary ways to use a JS value.
 
 Interop: short for "interoperability".
 
-FFI: Foreign Function Interface. The general term for things like "external", "wrapper" and "interop". Basically means calling a value from the other language. Prefer the first two terms.
+FFI: Foreign Function Interface. The general term for things like "external", "wrapper" and "interop". Basically means calling a value from the other language. Prefer to use the first two terms over this one.
