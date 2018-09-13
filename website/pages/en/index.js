@@ -136,8 +136,8 @@ class Index extends React.Component {
                   content: "Simple, small and blazingly fast build workflow. No more configuration debugging!",
                 },
                 {
-                  title: "All The JavaScript Ecosystem",
-                  content: "**Readable** JS output and comprehensive support for communicating with existing code.",
+                  title: "The Whole JS Ecosystem",
+                  content: "**Readable** JavaScript output and comprehensive support for communicating with existing code.",
                 },
                 {
                   title: "Solid, Stable & Cross-platform",
