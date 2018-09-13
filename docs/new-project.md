@@ -2,7 +2,7 @@
 title: New Project
 ---
 
-Once you have installed BuckleScript (as described in the [previous section](https://bucklescript.github.io/docs/en/installation)), you can generate a lightweight project template:
+Once you have installed BuckleScript (as described in the [previous section](installation.md)), you can generate a lightweight project template:
 
 ```sh
 bsb -init my-new-project
