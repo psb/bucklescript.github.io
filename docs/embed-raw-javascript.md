@@ -2,7 +2,7 @@
 title: Embed Raw JavaScript
 ---
 
-We're introducing this **last-resort** escape hatch first, in case you're ever stuck trying the other more legitimate APIs and wanna move on. Here's how you can drop a chunk of JavaScript right into your BuckleScript file:
+We are introducing this **last-resort** escape hatch first in case you are ever stuck trying the other more legitimate APIs and want to move on. Here is how you can drop a chunk of JavaScript right into your BuckleScript file:
 
 ```ocaml
 let add = [%raw {|
@@ -84,14 +84,14 @@ Output:
 
 ```js
 function f (x,y) {
-  debugger; // JavaScript developer tools will set an breakpoint and stop here
+  debugger; // JavaScript developer tools will set a breakpoint and stop here
   x + y;
 }
 ```
 
 ## Detect Global Variables
 
-BuckleScript provides a relatively type safe approach for such use case: `external`. `[%external a_single_identifier]` is a value of type `option`. Example:
+BuckleScript provides a relatively type safe approach for such a use case: `external`. `[%external a_single_identifier]` is a value of type `option`. Example:
 
 ```ocaml
 match [%external __DEV__] with
@@ -150,9 +150,9 @@ if (match !== undefined) {
 
 Embedding raw JS snippets is **discouraged**, though also highly useful if you're just starting out. As a matter of fact, the first few Reason BuckleScript projects were converted through:
 
-- pasting raw JS snippets inside a file
-- examining the JS output (identical)
-- gradually extract a few values and functions and making sure the output still looks OK
+- pasting raw JS snippets inside a file,
+- examining the JS output (identical), and
+- gradually extracting a few values and functions and making sure the output still looks OK.
 
 At the end, we get a fully safe, converted Reason BuckleScript file whose JS output is clean enough that we can confidently assert that no new bug has been introduced during the conversion process.
 
