@@ -4,7 +4,7 @@ title: Common Data Types
 
 ## Shared Data Types
 
-BuckleScript's primitives such as `string`, `float`, `array` and a few others have a rather interesting property: they compile to the exact same thing in JavaScript! Thanks to this, there's close to no API to learn for these data types.
+BuckleScript's primitives such as `string`, `float`, `array` and a few others have a rather interesting property: they compile to the exact same thing in JavaScript! Thanks to this, there is close to no API to learn for these data types.
 
 This means that if you receive e.g. a string from the JS side, you can use it **without conversion** on the BS side, and vice-versa. In other words, string and others are "_guaranteed public representations_".
 
@@ -18,7 +18,7 @@ Immutable on both sides, as expected. [BuckleScript String API](https://reasonml
 
 #### Unicode Support
 
-OCaml string is an immutable byte sequence. If the user types some unicode:
+An OCaml string is an immutable byte sequence. If the user types some unicode:
 
 ```ocaml
 Js.log "你好"
@@ -28,13 +28,13 @@ Js.log "你好"
 Js.log("你好")
 ```
 
-It'll compile to the follow JS:
+It will compile to the follow JS:
 
 ```js
 console.log("\xe4\xbd\xa0\xe5\xa5\xbd");
 ```
 
-Which gives you cryptic console output. To rectify this, BuckleScript exposes a special `js` annotation to the default [quoted string syntax](https://reasonml.github.io/docs/en/string-and-char.html#quoted-string) built into the language. Use it like this:
+Which gives you some cryptic console output. To rectify this, BuckleScript exposes a special `js` annotation to the default [quoted string syntax](https://reasonml.github.io/docs/en/string-and-char.html#quoted-string) built into the language. Use it like this:
 
 ```ocaml
 Js.log {js|你好，
@@ -46,7 +46,7 @@ Js.log({js|你好，
 世界|js})
 ```
 
-This'll correctly output:
+This will correctly output:
 
 ```js
 console.log("你好，\n世界");
@@ -70,11 +70,11 @@ You can surround the variable in parentheses too: `{j|你好，$(world)|j}`.
 
 ### Float
 
-BuckleScript floats are JS numbers, vice-versa. The OCaml standard library doesn't come with a Float module. JS Float API is [here](https://bucklescript.github.io/bucklescript/api/Js.Float.html).
+BuckleScript floats are JS numbers, and vice-versa. The OCaml standard library does not come with a Float module. The JS Float API is [here](https://bucklescript.github.io/bucklescript/api/Js.Float.html).
 
 ### Int
 
-**Ints are 32-bits**! Be careful, you can potentially treat them as JS numbers and vice-versa, but if the number's large, then you better treat JS numbers as floats. For example, we bind to Js.Date using `float`s. Js Int API [here](https://bucklescript.github.io/bucklescript/api/Js.Int.html).
+**Ints are 32-bits**! Be careful, you can potentially treat them as JS numbers, and vice-versa, but if the number is large, then it is better to treat JS numbers as floats. For example, we bind to Js.Date using `float`s. The Js Int API [here](https://bucklescript.github.io/bucklescript/api/Js.Int.html).
 
 ### Array
 
@@ -86,21 +86,21 @@ OCaml tuples are compiled to JS arrays. Convenient when you're interop-ing with 
 
 ### Bool
 
-Since BuckleScript 3, OCaml/Reason bool now compile to JS boolean.
+Since BuckleScript 3, OCaml/Reason bool now compiles to JS boolean.
 
 ## Non-shared Data Types
 
-Record, variant (including `option` and `list`), object and others can be exported as well, but you should **not** rely on their internal representation on the JS side. Aka, don't grab a BS list and start manipulating its structure on the JS side.
+Record, variant (including `option` and `list`), object and others can be exported as well, but you should **not** rely on their internal representation on the JS side; i.e., don't grab a BS list and start manipulating its structure on the JS side.
 
-However, for record and variant, we provide [generation of converters and accessors](generate-converters-accessors.md). Once you convert e.g. a record to a JS object, you can naturally use them on the JS side.
+However, for record and variant, we provide [generation of converters and accessors](generate-converters-accessors.md). Once you convert a record to a JS object, for example, you can naturally use them on the JS side.
 
 For list, use `Array.of_list` and `Array.to_list` in the [Array](https://reasonml.github.io/api/Array.html) module. `option` will be treated later on.
 
 ### Design Decisions
 
-As to why we don't compile list to JS array or vice-versa, it's because OCaml array and JS array share similar characteristics: mutable, similar read/write performance, etc. List, on the other hand, is immutable and has different access perf characteristics.
+As to why we do not compile an OCaml list to a JS array, or vice-versa, it is because an OCaml list is immutable and has different access performance characteristics compared to a JS array. However, an OCaml array and a JS array share similar characteristics - mutability, similar read/write performance, etc. - and so an OCaml array is compiled to a JS array.
 
-The same justification applies for records. OCaml records are fixed, nominally typed, and in general doesn't work well with JS objects. We do provide excellent facilities to bind to JS objects in the [object section](object.md).
+The same justification applies for records. OCaml records are fixed, nominally typed, and, in general, do not work well with JS objects. We do provide excellent facilities to bind to JS objects in the [object section](object.md).
 
 <!-- TODO: playground link -->
 
