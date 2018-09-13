@@ -2,7 +2,7 @@
 title: Cheatsheet
 ---
 
-The next few sections will cover these in detail. Feel free to skip this one if nothing makes sense yet!
+The next few sections will cover interoperability in detail. Feel free to skip this cheatsheet section if nothing makes sense yet!
 
 ## Raw JS
 
@@ -74,7 +74,7 @@ let a = Some(5); /* compiles to 5 */
 let b = None; /* compiles to undefined */
 ```
 
-Handling a value that can be `undefined` and `null`, by ditching the `option` type and using `Js.Nullable.t`:
+You can handle a value that can be `undefined` and `null` by ditching the `option` type and using `Js.Nullable.t`:
 
 ```ocaml
 let jsNull = Js.Nullable.null
