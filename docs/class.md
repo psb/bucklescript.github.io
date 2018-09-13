@@ -4,7 +4,7 @@ title: Class
 
 ## `new`
 
-Use `bs.new` to emulate e.g. `new Date()`:
+Use `bs.new` to emulate, for example, `new Date()`:
 
 ```ocaml
 type t
@@ -26,7 +26,7 @@ Output:
 var date = new Date();
 ```
 
-You can chain `bs.new` and `bs.module` if the JS module you're importing is itself a class:
+You can chain `bs.new` and `bs.module` if the JS module you are importing is itself a class:
 
 ```ocaml
 type t
@@ -75,4 +75,4 @@ class type _rect =
 type rect = Js.t(_rect);
 ```
 
-For `Js.t` classes, methods with arrow types are treated as real methods (automatically annotated with `[@bs.meth]`) while methods with non-arrow types are treated as properties. Adding `bs.set` to those methods will make them mutable, which enables you to set them using `#=` later. Dropping the `bs.set` attribute makes the method/property immutable. Basically like the object section's features.
+For `Js.t` classes, methods with arrow types are treated as real methods (automatically annotated with `[@bs.meth]`) while methods with non-arrow types are treated as properties. Adding `bs.set` to those methods will make them mutable, which enables you to set them using `#=` later. Dropping the `bs.set` attribute makes the method/property immutable. Basically, like the object section's features.
