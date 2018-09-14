@@ -4,14 +4,13 @@ title: Import & Export
 
 ## Export
 
-BuckleScript allows compiling to:
+BuckleScript can compile to:
 
-- CommonJS (`require('myFile')`)
-- ES6 modules (`import * from 'myFile'`)
-- AMD (`define(['myFile'], ...)`)
+- CommonJS (`require('myFile')`).
+- ES6 modules (`import * from 'myFile'`).
+- AMD (`define(['myFile'], ...)`).
 
-The output format is configurable in bsb, described in a later section.
-<!-- TODO: bsb link -->
+The output format is configurable in the BS build system. (The build system is called `bsb` and is described in a [later section](build-overview.md).)
 
 By default, every `let` binding is exported. If their values are safe to use on the JS side, you can directly require the generated JS file and use them (see the JS file itself!).
 
@@ -19,7 +18,7 @@ To only export a few selected `let`s, simply add an [interface file](https://rea
 
 ### Export an ES6 default value
 
-If your JS project is using ES6 modules, you're likely exporting & importing some default values:
+If your JS project is using ES6 modules, you are likely exporting and importing some default values:
 
 ```js
 // student.js
@@ -31,7 +30,7 @@ export default name = "Al";
 import studentName from 'student.js';
 ```
 
-Technically, since a BuckleScript file maps to a module, there's no such thing as "default" export, only named ones. However, we've made an exception to support default module when you do the following:
+Technically, since a BuckleScript file maps to a module, there is no such thing as a "default" export, only named ones. However, we have made an exception to support default in a module when you do the following:
 
 ```ocaml
 (* FavoriteStudent.ml *)
@@ -45,14 +44,14 @@ let default = "Bob"
 
 <!-- TODO: playground link on the result -->
 
-You can then require the default as normal JS side:
+You can then require the default value as normal on the JS side:
 
 ```js
 // teacher2.js
 import studentName from 'FavoriteStudent.js';
 ```
 
-**Note**: the above JS snippet _only_ works if you're using that ES6 import/export syntax in JS. If you're still using `require`, you'd need to do:
+**Note**: the above JS snippet _only_ works if you are using ES6 import/export syntax in JS. If you are still using `require`, you will need to do:
 
 ```js
 let studentName = require('FavoriteStudent').default;
@@ -60,7 +59,7 @@ let studentName = require('FavoriteStudent').default;
 
 ## Import
 
-Use `bs.module`. It's like a `bs.val` that accepts a string that's the module name or path.
+Use `bs.module`. It is like a `bs.val` that accepts a string that is the module name or path.
 
 ```ocaml
 external dirname: string -> string = "dirname" [@@bs.module "path"]
@@ -83,7 +82,7 @@ var root = Path.dirname("/User/chenglou");
 
 ### Import a Default Value
 
-By omitting the payload to `bs.module`, you bind to the whole JS module:
+By omitting the payload to `bs.module`, you automatically bind to the whole JS module:
 
 ```ocaml
 external leftPad: string -> int -> string = "./leftPad" [@@bs.module]
@@ -104,7 +103,7 @@ var paddedResult = LeftPad("hi", 5);
 
 #### Import an ES6 Default Value
 
-This is a recurring question, so we'll answer it here. **If your JS project is using ES6**, you're likely using Babel to compile it to regular JavaScript. Babel's ES6 default export actually exports the default value under the name `default`. You'd bind to it like this:
+This is a recurring question so we will answer it here. **If your JS project is using ES6**, it is highly likely that you are using Babel to compile it to regular JavaScript. Babel's ES6 default export actually exports the default value under the name `default`. You can bind to it like this:
 
 ```ocaml
 external studentName: string = "default" [@@bs.module "./student"]
@@ -125,7 +124,7 @@ console.log(Student.default);
 
 ### Tips & Tricks
 
-When the name you're using on the BS side matches the name of the JS value, you can use the empty string shorthand:
+When the name you are using on the BS side matches the name of the JS value, you can use the empty string shorthand:
 
 ```ocaml
 external dirname: string -> string = "" [@@bs.module "path"]
