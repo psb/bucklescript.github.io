@@ -14,21 +14,21 @@ let result = encodeURI "hello"
 let result = encodeURI("hello");
 ```
 
-We also expose a few special features, described below.
+We also expose a few special features, which are described below.
 
 ## Labeled Arguments
 
-OCaml has labeled arguments (that are potentially optional). These work on an `external` too! You'd use them to _fix_ a JS function's unclear usage. Assuming we're modeling this:
+OCaml has labeled arguments (that are potentially optional). These work on an `external` too! You would use them to _fix_ a JS function's unclear usage. Assuming we are modeling this:
 
 ```js
 function draw(x, y, border) {
-   /* border is optional, defaults to false */
+   /* border is optional and defaults to false */
 }
 draw(10, 20)
 draw(20, 20, true)
 ```
 
-It'd be nice if on the BS side, we can bind & call `draw` while labeling things a bit:
+It would be nice if, on the BS side, we can bind and call `draw` while labeling things a bit:
 
 ```ocaml
 external draw : x:int -> y:int -> ?border:bool -> unit -> unit = "" [@@bs.val]
@@ -51,13 +51,13 @@ draw(10, 20, true);
 draw(10, 20, undefined);
 ```
 
-We've compiled to the same function, but now the usage is much clearer on the BS side thanks to labels!
+We have compiled to the same function, but now the usage is much clearer on the BS side thanks to labels!
 
-**Note**: in this particular case, you need a unit, `()` after `border`, since `border` is an [optional argument at the last position](https://reasonml.github.io/docs/en/function.html#optional-labeled-arguments). Not having a unit to indicate you've finished applying the function would generate a warning.
+**Note**: in this particular case, you need a unit - `()` - after `border` since `border` is an [optional argument at the last position](https://reasonml.github.io/docs/en/function.html#optional-labeled-arguments). Not having a unit to indicate you have finished applying the function would generate a warning.
 
 ## Object Method
 
-Functions attached to a JS objects require a special way of binding to them, using `bs.send`:
+Functions attached to JS objects require a special way of binding to them. This is done using `bs.send`:
 
 ```ocaml
 type document (* abstract type for a document object *)
@@ -81,15 +81,15 @@ Output:
 var el = document.getElementById("myId");
 ```
 
-In a `bs.send`, the object is always the first argument. Actual arguments of the method follow (this is a bit what modern OOP objects are really).
+In a `bs.send` the object is always the first argument. Actual arguments of the method follow (this is a bit like modern OOP objects).
 
 ### Chaining
 
-Ever used `foo().bar().baz()` chaining ("fluent api") in JS OOP? We can model that in BuckleScript too, through the fast pipe operator described in the next section.
+Have you ever used `foo().bar().baz()` chaining ("fluent api") in JS OOP? We can model this in BuckleScript using the fast pipe operator, which is described in its [own](fast-pipe.md) section.
 
 ## Variadic Function Arguments
 
-You might have JS functions that take an arbitrary amount of arguments. BuckleScript supports modeling those, under the condition that the arbitrary arguments part is homogenous (aka of the same type). If so, add `bs.splice` to your `external`.
+You might have JS functions that take an arbitrary number of arguments. BuckleScript supports modeling those under the condition that the arbitrary arguments are homogenous (i.e., of the same type). To do so, add `bs.splice` to your `external`.
 
 ```ocaml
 external join : string array -> string = "" [@@bs.module "path"] [@@bs.splice]
@@ -108,11 +108,11 @@ var Path = require("path");
 var v = Path.join("a", "b");
 ```
 
-_`bs.module` will be explained in the Import & Export section next_.
+_`bs.module` will be explained in the [Import & Export](import-export.md) section_.
 
 ## Modeling Polymorphic Function
 
-Apart from the above special-case, JS function in general are often arbitrary overloaded in terms of argument types and number. How would you bind to those?
+Apart from the above special-case, JS functions are often arbitrarily overloaded in terms of argument types and number. How would you bind to those?
 
 ### Trick 1: Multiple `external`s
 
@@ -130,11 +130,11 @@ external draw : string -> useRandomAnimal:bool -> unit = "draw" [@@bs.module "Dr
 [@bs.module "Drawing"] external draw : (string, ~useRandomAnimal: bool) => unit = "draw";
 ```
 
-Note how all three externals bind to the same JS function, `draw`.
+Notice how all three externals bind to the same JS function called `draw`.
 
 ### Trick 2: Polymorphic Variant + `bs.unwrap`
 
-If you have the irresistible urge of saying "if only this JS function argument was a variant instead of informally being either `string` or `int`", then good news: we do provide such `external` features through annotating a parameter as a polymorphic variant! Assuming you have the following JS function you'd like to bind to:
+If you have the irresistible urge of saying "if only this JS function argument was a variant instead of informally being either `string` or `int`", then good news: we do provide such `external` features through annotating a parameter as a polymorphic variant! Assuming you have the following JS function you would like to bind to:
 
 ```js
 function padLeft(value, padding) {
@@ -148,7 +148,7 @@ function padLeft(value, padding) {
 }
 ```
 
-Here, `padding` is really conceptually a variant. Let's model it as such.
+Conceptually, `padding` is really a variant. Let's model it as such.
 
 ```ocaml
 external padLeft :
@@ -177,16 +177,16 @@ padLeft("Hello World", `Int(4));
 padLeft("Hello World", `Str("Message from BS: "));
 ```
 
-Obviously, the JS side couldn't have an argument that's a polymorphic variant! But here, we're just piggy backing on poly variants' type checking and syntax. The secret is the `[@bs.unwrap]` annotation on the type. It strips the variant constructors and compile to just the payload's value. Output:
+Obviously, the JS side could not have an argument that's a polymorphic variant! But here, we are just piggy backing on polymorphic variants' type checking and syntax. The secret is the `[@bs.unwrap]` annotation on the type. It strips the variant constructors and compiles to just the payload's value:
 
 ```js
 padLeft("Hello World", 4);
 padLeft("Hello World", "Message from BS: ");
 ```
 
-## Constraint Arguments Better
+## Constrain Arguments Better
 
-Consider the Node `fs.readFileSync`'s second argument. It can take a string, but really only a defined set: `"ascii"`, `"utf8"`, etc. You can still bind it as a string, but we can use poly variants + `bs.string` to ensure that our usage's more correct:
+Consider the Node `fs.readFileSync`'s second argument. It can take a string, but really only a defined set: `"ascii"`, `"utf8"`, etc. You can still bind it as a string, but we can use polymorphic variants plus `bs.string` to ensure that our usage is more correct:
 
 ```ocaml
 external readFileSync :
@@ -220,12 +220,12 @@ var Fs = require("fs");
 Fs.readFileSync("xx.txt", "ascii");
 ```
 
-- Attaching `[@bs.string]` to the whole poly variant type makes its constructor compile to a string of the same name.
+- Attaching `[@bs.string]` to the whole polymorphic variant type makes its constructor compile to a string of the same name.
 - Attaching a `[@bs.as "foo"]` to a constructor lets you customize the final string.
 
-And now, passing something like `"myOwnUnicode"` or other variant constructor names to `readFileSync` would correctly error.
+Now, passing something like `"myOwnUnicode"`, or other variant constructor names, to `readFileSync` will error correctly.
 
-Aside from string, you can also compile an argument to an int, using `bs.int` instead of `bs.string` in a similar way:
+Aside from string, you can also compile an argument to an integer using `bs.int`, instead of `bs.string`, in a similar way:
 
 ```ocaml
 external test_int_type :
@@ -309,7 +309,7 @@ function register(rl) {
 
 ## Fixed Arguments
 
-Sometimes it's convenient to bind to a function using an `external`, while passing predetermined argument values to the JS function:
+Sometimes it is convenient to bind to a function using an `external` while passing predetermined argument values to the JS function:
 
 ```ocaml
 external process_on_exit :
@@ -348,7 +348,7 @@ The `[@bs.as "exit"]` and the placeholder `_` argument together indicates that y
 
 ## Curry & Uncurry
 
-Curry is a delicious Indian dish. More importantly, in the context of BuckleScript (and functional programming in general), currying means that function taking multiple arguments can be applied a few arguments at time, until all the arguments are applied.
+Curry is a delicious Indian dish. More importantly, in the context of BuckleScript (and functional programming in general), currying means that a function taking multiple arguments can be applied a few arguments at time, until all the arguments are applied.
 
 ```ocaml
 let add x y z = x + y + z
@@ -362,7 +362,7 @@ let addFive = add(5);
 let twelve = addFive(3, 4);
 ```
 
-See the `addFive` intermediate function? `add` takes in 3 arguments but received only 1. It's interpreted as "currying" the argument `5` and waiting for the next 2 arguments to be applied later on. Type signatures:
+Notice the `addFive` intermediate function. `add` takes in 3 arguments but received only 1. It is interpreted as "currying" the argument `5` and waiting for the next 2 arguments to be applied later on. The corresponding type signatures are:
 
 ```ocaml
 val add: int -> int -> int -> int
@@ -376,27 +376,27 @@ let addFive: (int, int) => int;
 let twelve: int;
 ```
 
-(In a dynamic language such as JS, currying would be dangerous, since accidentally forgetting to pass an argument doesn't error at compile time).
+(In a dynamic language, such as JS, currying would be dangerous since accidentally forgetting to pass an argument does not create an error at compile time.)
 
 ### Drawback
 
-Unfortunately, due to JS not having currying because of the aforementioned reason, it's hard for BS multi-argument functions to map cleanly to JS functions 100% of the time:
+Unfortunately, due to JS not having currying because of the aforementioned reason, it is hard for BS multi-argument functions to map cleanly to JS functions 100% of the time; therefore:
 
-1. When all the arguments of a function are supplied (aka no currying), BS does its best to to compile e.g. a 3-arguments call into a plain JS call with 3 arguments.
+1. When all the arguments of a function are supplied (i.e., no currying), BS does its best to compile, for example, a 3-argument call into a plain JS call with 3 arguments.
 
-2. If it's too hard to detect whether a function application is complete\*, BS will use a runtime mechanism (the `Curry` module) to curry as many args as we can and check whether the result is fully applied.
+2. If it is too hard to detect whether a function application is complete\*, BS will use a runtime mechanism (the `Curry` module) to curry as many arguments as we can and check whether the result is fully applied.
 
-3. Some JS APIs like `throttle`, `debounce` and `promise` might mess with context, aka use the function `bind` mechanism, carry around `this`, etc. Such implementation clashes with the previous currying logic.
+3. Some JS APIs (like `throttle`, `debounce` and `promise`) might mess with context, i.e., use the functions `bind` mechanism, carry around `this`, etc. Such implementations clash with the previous currying logic.
 
-\* If the call site is typed as having 3 arguments, we sometimes don't know whether it's a function that's being curried, or if the original one indeed has only 3 arguments.
+\* If the call site is typed as having 3 arguments, we sometimes don't know whether it is a function that is being curried, or if the original one indeed has only 3 arguments.
 
-BS tries to do #1 as much as it can. Even when it bails and uses #2's currying mechanism, it's usually harmless.
+BS tries to do #1 as much as it can. Even when it bails and uses #2's currying mechanism, it is usually harmless.
 
-**However**, if you encounter #3, heuristics are not good enough: you need a guaranteed way of fully applying a function, without intermediate currying steps. We provide such guarantee through the use of the `[@bs]` "uncurrying" annotation on a function declaration & call site.
+**However**, if you encounter #3, heuristics are not good enough: you need a guaranteed way of fully applying a function without intermediate currying steps. We provide such a guarantee through the use of the `[@bs]` "uncurrying" annotation on a function declaration and call site.
 
 ### Solution: Guaranteed Uncurrying
 
-If you annotate a function declaration signature on an `external` or `let` with a `[@bs]` (or, in Reason syntax, annotate the start of the parameters with a dot), you'll turn that function into an similar-looking one that's guaranteed to be uncurried:
+If you annotate a function declaration signature on an `external` or `let` with a `[@bs]` (or, in Reason syntax, annotate the start of the parameters with a dot), you will turn that function into an similar-looking one that is guaranteed to be uncurried:
 
 ```ocaml
 type timerId
@@ -412,9 +412,9 @@ type timerId;
 let id = setTimeout((.) => Js.log("hello"), 1000);
 ```
 
-**Note**: both the declaration site and the call site need to have the uncurry annotation. That's part of the guarantee/requirement.
+**Note**: both the declaration site and the call site need to have the uncurry annotation. That is part of the guarantee/requirement.
 
-When you try to curry such a function, you'll get a type error:
+When you try to curry such a function, you will get a type error:
 
 ```ocaml
 let add = fun [@bs] x y z -> x + y + z
@@ -432,13 +432,13 @@ Error:
 This is an uncurried bucklescript function. It must be applied with [@bs].
 ```
 
-#### Extra Solution
+#### Alternative Solution
 
 The above solution is safe, guaranteed, and performant, but sometimes visually a little burdensome. We provide an alternative solution if:
 
-- you're using `external`
-- the `external` function takes in an argument that's another function
-- you want the user **not** to need to annotate the call sites with `[@bs]` or the dot in Reason
+- you are using `external`,
+- the `external` function takes in an argument that is another function, and
+- you want the user to **not** need to annotate the call sites with `[@bs]` or the dot in Reason.
 
 <!-- TODO: is this up-to-date info? -->
 
@@ -466,16 +466,16 @@ let id : ('a -> 'a [@bs]) = ((fun v -> v) [@bs])
 let id: (. 'a) => 'a = (. v) => v;
 ```
 
-You’ll get this cryptic error message:
+You will get this cryptic error message:
 
 ```
 Error: The type of this expression, ('_a -> '_a [@bs]),
        contains type variables that cannot be generalized
 ```
 
-The issue here isn’t that the function is polymorphic. You can use polymorphic uncurried functions as inline callbacks, but you can’t export them (and `let`s are exposed by default unless you hide it with an interface file). The issue here is a combination of the uncurried call, polymorphism and exporting the function. It’s an unfortunate limitation of how OCaml’s type system incorporates side-effects, and how BS handles uncurrying.
+The issue here is not that the function is polymorphic. You can use polymorphic uncurried functions as inline callbacks, but you cannot export them (and `let`s are exposed by default unless you hide them with an interface file). The issue here is a combination of the uncurried call, polymorphism and exporting the function. It is an unfortunate limitation of how OCaml’s type system incorporates side-effects, and how BS handles uncurrying.
 
-The simplest solution is in most cases to just not export it, by adding an interface to the module. Alternatively, if you really need to export it, you can do so in its curried form, and then wrap it in an uncurried lambda at the call site. E.g.:
+The simplest solution is in most cases is to just not export it by adding an interface to the module. Alternatively, if you really need to export it, you can do so in its curried form, and then wrap it in an uncurried lambda at the call site. E.g.:
 
 ```ocaml
 let _ = map (fun v -> id v [@bs])
@@ -487,13 +487,13 @@ map(v => id(. v));
 
 ##### Design Decisions
 
-In general, `bs.uncurry` is recommended; the compiler will do lots of optimizations to resolve the currying to uncurrying at compile time. However, there are some cases the compiler can't optimize it. In these case, it will be converted to a runtime check.
+In general, `bs.uncurry` is recommended; the compiler will do lots of optimizations to resolve the currying to uncurrying at compile time. However, there are some cases the compiler cannot optimize, so these cases will be converted to a runtime check.
 
-This means `[@bs]` are completely static behavior (no runtime cost), while `[@bs.uncurry]` is more convenient for end users but, in some rare cases, might be slower than `[@bs]`.
+This means `[@bs]` is a completely static behavior (no runtime cost), while `[@bs.uncurry]` is more convenient for end users (in some rare cases it might also be slower than `[@bs]`).
 
 ## Modeling `this`-based Callbacks
 
-Many JS libraries have callbacks which rely on this (the source), for example:
+Many JS libraries have callbacks which rely on `this` (the source), for example:
 
 ```js
 x.onload = function(v) {
@@ -501,7 +501,7 @@ x.onload = function(v) {
 }
 ```
 
-Here, `this` would point to `x` (actually, it depends on how `onload` is called, but we digress). It's not correct to declare `x.onload` of type `unit → unit [@bs]`. Instead, we introduced a special attribute, `bs.this`, which allows us to type `x` as so:
+Here, `this` would point to `x` (actually, it depends on how `onload` is called, but we digress). It is not correct to declare `x.onload` of type `unit → unit [@bs]`. Instead, we introduced a special attribute, `bs.this`, which allows us to type `x` as so:
 
 ```ocaml
 type x
@@ -534,4 +534,4 @@ x.onload = (function (v) {
   });
 ```
 
-`bs.this` is the same as `bs`, except that its first parameter is reserved for `this` and for arity of 0, there is no need for a redundant `unit` type.
+`bs.this` is the same as `bs`, except that its first parameter is reserved for `this` and for an arity of 0 - there is no need for a redundant `unit` type.
