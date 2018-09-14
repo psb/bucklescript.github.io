@@ -6,7 +6,7 @@ BuckleScript has a special `|.` (or `->` for Reason) pipe syntax for dealing wit
 
 ## Pipelining
 
-The pipe takes the item on the left and put it as the first argument of the item on the right. Great for building pipelines of data processing:
+The pipe takes the item on the left and puts it as the first argument of the item on the right, which is great for building data processing pipelines:
 
 ```ocaml
 a
@@ -32,7 +32,7 @@ bar(foo(a, b))
 
 ## JS Method Chaining
 
-JavaScript's APIs are often attached to objects, and often chainable, like so:
+JavaScript's APIs are often attached to objects and are chainable, like so:
 
 ```js
 const result = [1, 2, 3].map(a => a + 1).filter(a => a % 2 === 0);
@@ -40,7 +40,7 @@ const result = [1, 2, 3].map(a => a + 1).filter(a => a % 2 === 0);
 asyncRequest().setWaitDuration(4000).send();
 ```
 
-Assuming we don't need the chaining behavior above, we'd bind to each case this using `bs.send` from the previous section:
+Assuming we do not need the chaining behavior shown above, we could bind to each case using `bs.send`:
 
 ```ocaml
 external map : 'a array -> ('a -> 'b) -> 'b array = "" [@@bs.send]
@@ -62,7 +62,7 @@ external asyncRequest: unit => request = "";
 [@bs.send] external send: request => unit = "";
 ```
 
-You'd use them like this:
+You would then use them like this:
 
 ```ocaml
 let result = filter (map [|1; 2; 3|] (fun a -> a + 1)) (fun a -> a mod 2 = 0)
@@ -76,7 +76,7 @@ let result = filter(map([|1, 2, 3|], a => a + 1), a => a mod 2 == 0);
 send(setWaitDuration(asyncRequest(), 4000));
 ```
 
-This looks much worse than the JS counterpart! Now we need to read the actual logic "inside-out". We also cannot use the `|>` operator here, since the object comes _first_ in the binding. But `|.` and `->` work!
+This looks much worse than the JS counterpart! Now we need to read the actual logic "inside-out". We also cannot use the `|>` operator here because the object comes _first_ in the binding. But `|.` and `->` work!
 
 ```ocaml
 let result = [|1; 2; 3|]
