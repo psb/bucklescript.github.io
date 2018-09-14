@@ -2,11 +2,11 @@
 title: Generate Converters & Helpers
 ---
 
-Sometimes, you might want to generate e.g. function accessors from a variant declaration, or a `Js.t` object + converter functions from a record definition. BuckleScript comes with a few annotations that allow you to generate those.
+Sometimes you might want to generate function accessors from a variant declaration, or a `Js.t` object and converter functions from a record definition, for example. BuckleScript comes with a few annotations that allow you to generate those.
 
-## Functions & Plain Values for Variant
+## Functions & Plain Values for Variants
 
-Use `accessors`.
+Use `accessors`:
 
 ```ocaml
 type action =
@@ -28,7 +28,7 @@ Variants constructors with payloads generate functions, payload-less constructor
 
 - The generated accessors are lower-cased.
 - You can now use these helpers on the JavaScript side! But don't rely on their actual values please.
-- Doesn't work with polymorphic variants yet.
+- This does not work with polymorphic variants yet.
 
 Output:
 
@@ -58,8 +58,8 @@ let s = submit("hello"); /* gives Submit("hello") */
 
 This is useful:
 
-- When you're passing the accessor function as a higher-order function (which plain variant constructors aren't).
-- When you'd like the JS side to use these values & functions opaquely and pass you back a variant constructor (since JS has no such thing).
+- When you are passing the accessor function as a higher-order function (which plain variant constructors are not).
+- When you would like the JS side to use these values and functions opaquely, and pass you back a variant constructor (since JS has no such thing).
 
 ## Convert Between `Js.t` Object and Record
 
@@ -96,8 +96,8 @@ let coordinatesFromJs: {.. "x": int, "y": int} => coordinates;
 
 **Note**:
 
-- `coordinatesFromJs` uses an open object type that accepts more fields, just to be more permissive.
-- The converters are shallow. They don't recursively drill into the fields and convert them. This preserves the speed and simplicity of output while satisfying 80% of use-cases. File an issue if you'd like seeing recursive conversion happen though!
+- `coordinatesFromJs` uses an open object type that accepts more fields (just to be more permissive).
+- The converters are shallow. They do not recursively drill into the fields and convert them. This preserves the speed and simplicity of output while satisfying 80% of use-cases. File an issue if you would like to see recursive conversion happen!
 
 ### Usage
 
@@ -156,7 +156,7 @@ let coordinatesFromJs: abs_coordinates => coordinates;
 
 #### Usage
 
-Using `newType`, you've now prevented consumers from inadvertently doing the following:
+Using `newType` prevents consumers from inadvertently doing the following:
 
 ```ocaml
 let myCoordinates = {
@@ -165,7 +165,7 @@ let myCoordinates = {
 }
 let jsCoords = coordinatesToJs myCoordinates
 
-let x = jsCoords##x (* disallowed! Don't access the object's internal details *)
+let x = jsCoords##x (* Disallowed! Don't access the object's internal details *)
 ```
 
 ```reason
@@ -175,10 +175,10 @@ let myCoordinates = {
 };
 let jsCoords = coordinatesToJs(myCoordinates);
 
-let x = jsCoords##x; /* disallowed! Don't access the object's internal details */
+let x = jsCoords##x; /* Disallowed! Don't access the object's internal details */
 ```
 
-Same generated output. Isn't it great that types prevent invalid accesses you'd otherwise have to encode at runtime?
+Same generated output. Isn't it great that types prevent invalid accesses you would otherwise have to encode at runtime?
 
 ## Convert between JS Integer Enum and BS Variant
 
@@ -216,9 +216,9 @@ let fruitToJs: fruit => int;
 let fruitFromJs: int => option(fruit);
 ```
 
-For `fruitToJs`, each fruit variant constructor would map into an integer, starting at 0, in the order they're declared.
+For `fruitToJs`, each fruit variant constructor would map into an integer, starting at 0, in the order they were declared.
 
-For `fruitFromJs`, the return value is an `option`, because not every int maps to a constructor.
+For `fruitFromJs`, the return value is an `option` because not every integer maps to a constructor.
 
 You can also attach a `[@bs.as alternativeIntValue]` to each constructor to customize their output.
 
@@ -259,7 +259,7 @@ switch (fruitFromJs(100)) {
 
 ### More Safety
 
-Similar to the JS object <-> record deriving, you can hide the fact that the JS enum are ints by passing the same `newType` option to the `jsConverter` plugin:
+Similar to the JS object <-> record deriving, you can hide the fact that the JS enum values are integers by passing the same `newType` option to the `jsConverter` plugin:
 
 ```ocaml
 type fruit =
@@ -291,7 +291,7 @@ let fruitToJs: fruit => abs_fruit;
 let fruitFromJs: abs_fruit => fruit;
 ```
 
-For `fruitFromJs`, the return value, unlike the previous non-abstract type case, doesn't contain an `option`, because there's no way a bad value can be passed into it; the only creator of `abs_fruit` values is `fruitToJs`!
+For `fruitFromJs`, the return value, unlike the previous non-abstract type case, does not contain an `option` because there is no way a bad value can be passed into it; the only creator of `abs_fruit` values is `fruitToJs`!
 
 #### Usage
 
@@ -354,4 +354,4 @@ let appleString = fruitToJs(`Apple); /* "Apple" */
 let kiwiString = fruitToJs(`Kiwi); /* "miniCoconut" */
 ```
 
-Deriving converters with abstract type through `newType` also still works.
+Deriving converters with abstract types through `newType` also still works.
