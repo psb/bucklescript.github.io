@@ -52,4 +52,4 @@ Technically, the correct way to handle JSON is to recursively parse each field a
 
 We have a community-maintaned, pseudo-official JSON helper library called [bs-json](https://github.com/reasonml-community/bs-json). Those interested in combinators can also check out [JsonCodec](https://github.com/state-machine-systems/JsonCodec). Both provide more convenient JSON parsing/printing helpers that leverage the previous section's low-level API.
 
-We will provide a better, first-party solution to working with JSON in the future. Stay tuned!
+We will provide a better, first-party solution for working with JSON in the future. Stay tuned!
