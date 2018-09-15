@@ -4,7 +4,7 @@ title: Miscellaneous
 
 ## Composing `bs` Attributes
 
-As you might have guessed, most `bs.*` attributes can be used together. Here's an extreme example:
+As you might have guessed, most `bs.*` attributes can be used together. Here is an extreme example:
 
 ```ocaml
 external draw: (_ [@bs.as "dog"]) -> int array -> unit = "draw" [@@bs.val] [@@bs.scope "global"] [@@bs.splice]
@@ -27,7 +27,7 @@ global.draw("dog", 1, 2);
 
 ## Safe External Data Handling
 
-In some cases, the data could either come from JS or BS; it's very hard to give precise type information because of this. For example, for an external promise whose creation could come from the JS API, its failed value caused by `Promise.reject` could be of any shape.
+In some cases, external data can either come from JS or BS; it is very hard to give precise type information because of this. For example, for an external promise whose creation could come from the JS API, its failed value caused by `Promise.reject` could be of any shape.
 
 BuckleScript provides a solution, `bs.open`, to filter out OCaml structured exception data from the mixed data source. It preserves type safety while allowing you to deal with mixed source. It makes use of OCaml’s extensible variant, so that users can mix values of type `exn` with JS data.
 
@@ -51,4 +51,4 @@ let handleData = [@bs.open] (
 (* let handleData: 'a => option(int) *)
 ```
 
-For any input source, as long as it matches the exception pattern (nested pattern match supported), the matched value is returned, otherwise return `None`.
+For any input source, as long as it matches the exception pattern (nested pattern matches are supported), the matched value is returned; otherwise, `None` is returned.
