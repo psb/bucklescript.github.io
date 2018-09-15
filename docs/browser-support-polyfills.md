@@ -2,7 +2,7 @@
 title: Browser Support & Polyfills
 ---
 
-BuckleScript compiles to JavaScript **ES5**, with the exception of allowing to compile to ES6 module import/export.
+BuckleScript compiles to JavaScript **ES5**, with the exception of allowing module import/export to compile to ES6.
 
 For [old browsers](https://caniuse.com/#search=typed%20array), you also need to polyfill TypedArray. The following OCaml standard library functions require it:
 
@@ -11,4 +11,4 @@ For [old browsers](https://caniuse.com/#search=typed%20array), you also need to 
 - `Int32.float_of_bits`
 - `Int32.bits_of_float`
 
-If you don't use these functions, you're fine. Otherwise, it'll be a runtime failure.
+If you do not use these functions then you are fine; otherwise, it will be a runtime failure.
