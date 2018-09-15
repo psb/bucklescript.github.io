@@ -2,21 +2,21 @@
 title: Configuration
 ---
 
-`bsconfig.json` is the single, mandatory build meta file needed for bsb.
+`bsconfig.json` is the single, mandatory build meta file needed for `bsb`.
 
-**The complete configuration schema is [here](https://bucklescript.github.io/bucklescript/docson/#build-schema.json)**. We'll _non-exhaustively_ highlight the important parts in prose here.
+**The complete configuration schema is [here](https://bucklescript.github.io/bucklescript/docson/#build-schema.json)**. We will _non-exhaustively_ highlight the important parts in prose here.
 
 ## name, namespace
 
-`name` is the name of the library, used as its "namespace". You can activate namespacing through `"namespace": true` in your `bsconfig.json`. Namespacing is almost **mandatory**; we haven't turned it on by default yet to preserve backward-compatibility.
+`name` is the name of the library and is used as its "namespace". You can activate namespacing through `"namespace": true` in your `bsconfig.json`. Namespacing is almost **mandatory**; however, in order to preserve backward-compatibility, we have not turned it on by default yet.
 
-**Explanation**: by default, your files, once used as a third-party dependency, are available globally to the consumer. E.g. if you have an `Util.re` and the consumer also has a file of the same name, they will clash. Turning on `namespace` avoids this by wrapping all your own project's files into an extra module layer; instead of a global `Util` module, the consumer will see you as `MyProject.Util`. **The namespacing affects your consumers, not yourself**.
+**Explanation**: by default, your files, once used as a third-party dependency, are available globally to the consumer. For example, if you have an `Util.re` and the consumer also has a file of the same name, they will clash. Turning on `namespace` avoids this by wrapping all your own project's files into an extra module layer - instead of a global `Util` module, the consumer will see you as `MyProject.Util`. **The namespacing affects your consumers, not yourself**.
 
-Aka, in Bsb, "namespace" is just a fancy term for an auto-generated module that wraps all your project's files (efficiently and correctly, of course!) for third-party consumption.
+In `bsb`, "namespace" is just a fancy term for an auto-generated module that wraps all your project's files (efficiently and correctly, of course!) for third-party consumption.
 
-We don't do folder-level namespacing for your own project; all your own file names must be unique. This is a constraint that enables several features such as fast search and easier project reorganization.
+We do not do folder-level namespacing for your own project; all your own file names must be unique. This is a constraint that enables several features such as fast search and easier project reorganization.
 
-**Note**: the `bsconfig.json` `name` should be the same as the `package.json` `name`, to avoid confusing corner-cases. However, this means that you can't use a camelCased names such as `MyProject`, since `package.json` and npm forbid you to do so (some file systems are case-insensitive). To have the namespace/module as `MyProject`, write `"name": "my-project"`. Bsb will turn that into the camelCased name correctly.
+**Note**: the `bsconfig.json` `name` should be the same as the `package.json` `name` to avoid confusing corner-cases. However, this means that you cannot use a camelCased names such as `MyProject`, since `package.json` and npm forbid you to do so (some file systems are case-insensitive). To have the namespace/module as `MyProject`, write `"name": "my-project"`. `bsb` will turn that into the camelCased name correctly.
 
 ## sources
 
@@ -48,7 +48,7 @@ Your source files need to be specified explicitly (we don't want to accidentally
 }
 ```
 
-You can mark your directories as dev-only (for e.g. tests). These won't be built and exposed to third-parties, or even to other "dev" directories in the same project:
+You can mark your directories as dev-only (e.g. tests). These will not be built and exposed to third-parties, or even to other "dev" directories in the same project:
 
 ```json
 {
@@ -61,7 +61,7 @@ You can mark your directories as dev-only (for e.g. tests). These won't be built
 
 ## bs-dependencies, bs-dev-dependencies
 
-List of BuckleScript/Reason dependencies. Just like `package.json`'s dependencies, they'll be searched in `node_modules`.
+These are lists of BuckleScript/Reason dependencies. Just like `package.json`'s dependencies, they will be searched for in `node_modules`.
 
 ## reason, refmt
 
@@ -78,7 +78,7 @@ The `refmt` config **should be explicitly specified** as `3`, as in the [Reason 
 
 ## js-post-build
 
-Hook that's invoked every time a file is recompiled. Good for JS build system interop, but please use it **sparingly**. Calling your custom command for every recompiled file slows down your build and worsens the building experience for even third-party users of your lib.
+This is a hook that is invoked every time a file is recompiled. It is good for JS build system interop, but please use it **sparingly**. Calling your custom command for every recompiled file slows down your build and worsens the building experience for even third-party users of your library.
 
 Example:
 
@@ -95,13 +95,13 @@ Note that the command's path resolution is done through the following:
 - `/myCommand` is resolved into `/myCommand`
 - `myCommand/` is resolved into `node_modules/myCommand`
 - `./myCommand` is resolved into `myProjectRoot/myCommand`
-- `myCommand` is just called as `myCommand`. But note that Bsb doesn't read into your environment, so if you put `node`, it won't find it unless you specify an absolute path. Alternatively, point to a script that has the header `#!/usr/local/bin/node`.
+- `myCommand` is just called as `myCommand`. But note that `bsb` does not read into your environment, so if you put `node` it will not find it unless you specify an absolute path. Alternatively, point to a script that has the header `#!/usr/local/bin/node`.
 
 The command itself is called from inside `lib/bs`.
 
 ## package-specs
 
-Output to either CommonJS (the default), ES6 modules or AMD. Example:
+Configure the output to be either CommonJS (the default), ES6 modules or AMD. For example:
 
 ```json
 {
@@ -112,27 +112,27 @@ Output to either CommonJS (the default), ES6 modules or AMD. Example:
 }
 ```
 
-- `"module": "es6-global"` resolves `node_modules` using relative paths. Good for development-time usage of ES6 in conjunction with browsers like Safari and Firefox that support ES6 modules today. **No more dev-time bundling**!
-- `"in-source": true` generates output alongside source files. If you omit it, it'll generate the artifacts into `lib/js`. The output directory is not configurable otherwise.
+- `"module": "es6-global"` resolves `node_modules` using relative paths. This is good for development-time usage of ES6 in conjunction with browsers like Safari and Firefox that support ES6 modules today. **No more dev-time bundling**!
+- `"in-source": true` generates output alongside source files. If you omit it, it will generate the artifacts into `lib/js`. The output directory is not configurable otherwise.
 
-This configuration only applies to you, when you develop the project. When the project is used as a third-party library, the consumer's own `bsconfig.json` `package-specs` overrides the configuration here, logically.
+This configuration only applies to you when you develop the project. When the project is used as a third-party library, the consumer's own `bsconfig.json` `package-specs` overrides the configuration here.
 
 ## suffix
 
-Either `".js"` or `".bs.js"`. Strongly prefer the latter.
+Use either `".js"` or `".bs.js"`. We strongly prefer the latter.
 
 ### Design Decisions
 
-Generating JS files with the `.bs.js` suffix means that, on the JS side, you can do `const myBuckleScriptFile = require('./theFile.bs')`. The benefits:
+Generating JS files with the `.bs.js` suffix means that, on the JS side, you can do `const myBuckleScriptFile = require('./theFile.bs')`. The benefits are:
 
-- It's immediately clear that we're dealing with a generated JS file here.
+- It is immediately clear that we are dealing with a generated JS file here.
 - It avoids clashes with a potential `theFile.js` file in the same folder.
-- It avoids the need of using a build system loader for BuckleScript files. This + in-source build means integrating a BuckleScript project into your pure JS codebase **basically doesn't touch anything in your build pipeline at all**.
-- The `.bs.js` suffix [lets bsb track JS artifacts much better](build-overview.md#tips-tricks).
+- It avoids the need of using a build system loader for BuckleScript files. This, plus an in-source build, basically means that when you integrate a BuckleScript project into your pure JS codebase, **your build pipeline is not touched at all**.
+- The `.bs.js` suffix [lets `bsb` track JS artifacts much better](build-overview.md#tips-tricks).
 
 ## warnings
 
-Selectively turn on/off certain warnings and/or turn them into hard errors. Example:
+You can selectively turn on or off certain warnings and/or turn them into hard errors. For example:
 
 ```json
 {
@@ -143,24 +143,24 @@ Selectively turn on/off certain warnings and/or turn them into hard errors. Exam
 }
 ```
 
-Turn off warning `44` and `102` (polymorphic comparison). Turn warning `5` (partial application whose result has function type and is ignored) into a hard error.
+The exmaple above turns off warning `44` and `102` (polymorphic comparison), and turns warning `5` (partial application whose result has a function type and is ignored) into a hard error.
 
-The warning number are shown in the build output when they're triggered. The complete list is [here](https://caml.inria.fr/pub/docs/manual-ocaml/comp.html#sec281), a little bit below. `100` and up are BuckleScript-specific.
+The warning numbers are shown in the build output when they are triggered. The complete list is [here](https://caml.inria.fr/pub/docs/manual-ocaml/comp.html#sec281). `100` and up are BuckleScript-specific.
 
 ## bsc-flags
 
-Extra flags to pass to the underlying `bsc` call. Notably: `["-bs-super-errors"]` for turning on [cleaning error output](https://reasonml.github.io/blog/2017/08/25/way-nicer-error-messages.html). No need to pass this flag for a Reason project; it's enabled by default.
+These extra flags are passed to the underlying `bsc` call. Notably: `["-bs-super-errors"]` for turning on [cleaning error output](https://reasonml.github.io/blog/2017/08/25/way-nicer-error-messages.html). There is no need to use this flag for a Reason project because it is enabled by default.
 
 ## Environment Variables
 
-We heavily disrecommend the usage of environment variables, but for certain cases, they're justified.
+We heavily advise against the usage of environment variables; but, for certain cases, they are justified.
 
 ### Error Output Coloring: `NINJA_ANSI_FORCED`
 
 This is mostly for other programmatic usage of `bsb` where outputting colors is not desired.
 
-When `NINJA_ANSI_FORCED` is set to `1`: `bsb` produces color.
-When `NINJA_ANSI_FORCED` is set to `0`: `bsb` doesn't produce color.
-When `NINJA_ANSI_FORCED` is not set: `bsb` might or might not produce color, depending on a smart detection of where it's outputted.
+When `NINJA_ANSI_FORCED` is set to `1`, `bsb` produces color.
+When `NINJA_ANSI_FORCED` is set to `0`, `bsb` does not produce color.
+When `NINJA_ANSI_FORCED` is not set, `bsb` may or may not produce color, depending on a smart detection of where it is outputted.
 
-> Note that bsc, the barebone compiler, will always be passed `-color always`. See more details in [this issue](https://github.com/BuckleScript/bucklescript/issues/2984#issuecomment-410669163).
+> Note that `bsc`, the barebone compiler, will always be passed `-color always`. See more details in [this issue](https://github.com/BuckleScript/bucklescript/issues/2984#issuecomment-410669163).
