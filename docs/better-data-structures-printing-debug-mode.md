@@ -2,9 +2,9 @@
 title: Better Data Structures Printing (Debug Mode)
 ---
 
-You might have seen that using `Js.log` to print records, variants and others don't print out record field names and variant tags. Record, for example, is compiled into an array (the field names are removed). This is partially for performance, and partially because of [insert excuse here].
+You might have seen that using `Js.log` to print records, variants and others does not print out record field names and variant tags. Record, for example, is compiled into an array (the field names are removed). This is partially for performance, and partially because of [insert excuse here].
 
-To remediate this, we introduce a flag for `bsc` (the BuckleScript compiler), `-bs-g`, that retains record fields names, variant tags, exception names, module names, etc.
+To remediate this, we introduce a flag for `bsc` (the BuckleScript compiler), `-bs-g`, that retains record field names, variant tags, exception names, module names, etc.
 
 <table>
   <thead> <tr><th>Before</th><th>After</th></tr> </thead>
@@ -20,15 +20,15 @@ To remediate this, we introduce a flag for `bsc` (the BuckleScript compiler), `-
   </tbody>
 </table>
 
-**Note**: this is for **debugging only**. Please don't forget to undo this for production.
+**Note**: this is for **debugging only**. Please do not forget to undo this for production.
 
 ## Usage
 
 - Add `"bsc-flags": ["-bs-g"]` to your `bsconfig.json`.
-- In the BuckleScript/Reason file you'd like to debug, add `[%%debugger.chrome]` at the top \*.
-- If you're on Node.js, run: `node --inspect-brk MyCompiledFile.js` and open this URL in Chrome: `chrome://inspect`.
-- Make sure you've got [Chrome custom formatter enabled](http://www.mattzeunert.com/2016/02/19/custom-chrome-devtools-object-formatters.html).
-- Click on inspect, then step through code as you would usually:
+- In the BuckleScript/Reason file you would like to debug, add `[%%debugger.chrome]` at the top \*.
+- If you are on Node.js, run: `node --inspect-brk MyCompiledFile.js` and open this URL in Chrome: `chrome://inspect`.
+- Make sure you have got [Chrome custom formatter enabled](http://www.mattzeunert.com/2016/02/19/custom-chrome-devtools-object-formatters.html).
+- Click on inspect and then step through the code as you would usually:
 
 ![debugger inspector](/img/debugger-inspector.png)
 
@@ -36,11 +36,11 @@ This custom formatter is still experimental; feel free to contribute to it [here
 
 **Note**: you need to restart `node` every time your files changes.
 
-**Note**: don't forget to remove `-bs-g` from your `bsconfig.json` for production!
+**Note**: do not forget to remove `-bs-g` from your `bsconfig.json` for production!
 
 ## Tips & Tricks
 
-[Here are other ways](https://nodejs.org/en/docs/guides/debugging-getting-started/#inspector-clients) to debug using node/Chrome.
+[Here are other ways](https://nodejs.org/en/docs/guides/debugging-getting-started/#inspector-clients) to debug using Node/Chrome.
 
 \* The extension `[%%debugger.chrome]` conditionally turns on the debugger support. Feel free to keep it on at all time; it will not generate any extra garbage code **unless** you have `-bs-g` flag turned on above.
 
