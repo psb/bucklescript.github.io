@@ -10,7 +10,7 @@ In OCaml, the C FFI allows the user to define a custom data type and customize `
 
 ## Physical (in)equality
 
-In general, only use physical equality as an optimization technique; don't rely on its correctness, since it is tightly coupled with the runtime.
+In general, only use physical equality as an optimization technique; do not rely on its correctness, since it is tightly coupled with the runtime.
 
 ## String Char Range
 
@@ -22,25 +22,25 @@ OCaml’s weak map is not available in BuckleScript. The weak pointer is replace
 
 ## Integers
 
-OCaml has `int`, `int32`, `nativeint` and `int64` types.
+OCaml has `int`, `int32`, `int64` and `nativeint` types.
 
 - Both `int32` and `int64` in BuckleScript have the exact same semantics as OCaml.
-- `int` in BuckleScript is the same as `int32` while in OCaml it’s platform dependent.
-- `nativeint` is treated as JavaScript float, except for division. For example, `Nativeint.div a b` will be translated into `a / b | 0`.
+- `int` in BuckleScript is the same as `int32`, while in OCaml it is platform dependent.
+- `nativeint` is treated as a JavaScript float, except for division. For example, `Nativeint.div a b` will be translated into `a / b | 0`.
 
-**Note**: `Nativeint.shift_right_logical x 0` is different from `Int32.shift_right_local x 0`. The former is literally translated into `x >>> 0` (translated into an unsigned int), while the latter is `x | 0`.
+**Note**: `Nativeint.shift_right_logical x 0` is different from `Int32.shift_right_local x 0`. The former is literally translated into `x >>> 0` (translated into an unsigned integer), while the latter is `x | 0`.
 
 ## Printf.printf
 
-The Printf.print implementation in BuckleScript requires a newline (`\n`) to trigger the printing. This behavior is not consistent with the buffered behavior of native OCaml. The only potential problem we foresee is that if the program terminates with no newline character, the text will never be printed.
+The `Printf.printf` implementation in BuckleScript requires a newline (`\n`) to trigger the printing. This behavior is not consistent with the buffered behavior of native OCaml. The only potential problem we foresee is that if the program terminates with no newline character, the text will never be printed.
 
 ## Obj Module
 
-We do our best to mimic the native compiler, but we have no guarantee and there are differences.
+We do our best to mimic the native compiler, but we have no guarantees and there are differences.
 
 ## Hashtbl Hash Algorithm
 
-BuckleScript uses the same algorithm as native OCaml, but the output is different due to the runtime representation of int/int64/int32 and float.
+BuckleScript uses the same algorithm as native OCaml, but the output is different due to the runtime representation of int/int32/int64 and float.
 
 ## Marshall Module
 
@@ -52,4 +52,4 @@ Command line arguments are always empty. This might be fixed in the future. `Sys
 
 ## Unsupported IO Primitives
 
-Because of the JS environment limitation, `Pervasives.stdin` is not supported but both `Pervasives.stdout` and `Pervasives.stderr` are.
+Because of the JS environment limitation, `Pervasives.stdin` is not supported, but both `Pervasives.stdout` and `Pervasives.stderr` are.
