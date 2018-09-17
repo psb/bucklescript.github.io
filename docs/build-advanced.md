@@ -2,18 +2,18 @@
 title: Advanced
 ---
 
-## Customize Rules (Generators Support)
+## Custom Rules (Generators Support)
 
 You might use some pre-processor to generate boilerplate code during development.
 
-**Note**: pre-processors can be classified as two categories:
+**Note**: pre-processors can be classified into two categories:
 
 - System-dependent, which should be delayed until running on user machines.
 - System-independent: lex, yacc, m4, re2c, etc, which can be executed any time.
 
 BS has built in support for [conditional compilation](conditional-compilation.md), which satisfies the first point. This section is about the second point.
 
-An example, where bsb uses [ocamlyacc](http://caml.inria.fr/pub/docs/manual-ocaml-4.00/manual026.html):
+An example, where `bsb` uses [ocamlyacc](http://caml.inria.fr/pub/docs/manual-ocaml-4.00/manual026.html):
 
 ```json
 {
@@ -35,11 +35,11 @@ An example, where bsb uses [ocamlyacc](http://caml.inria.fr/pub/docs/manual-ocam
 }
 ```
 
-`ocamlyacc` will generate the artifacts `test.ml` and `test.mli` in the same directory than `test.mly`.
+`ocamlyacc` will generate the artifacts `test.ml` and `test.mli` in the same directory as `test.mly`.
 
 **Note**: we highly recommend you to check in the generated files, since this cuts out dependencies like `ocamlyacc` for the end-users.
 
-When developing a project, `bsb` will track the dependencies between `test.ml` and `test.mly` properly. When released as a package, `bsb` will cut such dependency, so that users will only need the generated `test.ml`. To help test such behavior in development mode, users could set it manually:
+When developing a project, `bsb` will track the dependencies between `test.ml` and `test.mly` properly. When released as a package, `bsb` will cut such dependency, so that users will only need the generated `test.ml`. To help test such behavior in development mode, users can set it manually:
 
 ```json
 {
