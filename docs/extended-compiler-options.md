@@ -2,13 +2,13 @@
 title: Extended Compiler Options
 ---
 
-**Note**: this section is only for people who want roll their own build system instead of using the recommended build system, `bsb`. This also provides some tips for contributors who debug the compiler.
+**Note**: this section is only for people who want roll their own build system instead of using the recommended build system, `bsb`. This also provides some tips for contributors who want to debug the compiler.
 
 BuckleScript inherits the command line arguments of the [OCaml compiler](http://caml.inria.fr/pub/docs/manual-ocaml/comp.html). It also adds several BS-specific flags. Run `bsc -help` to see the list.
 
-All these flags can be passed into the `bsc-flags` section of `bsb` (though some of them don't make sense to be passed).
+All the compiler flags can be passed into the `bsc-flags` section of `bsb` (although it does not make sense for some of them to be passed in).
 
-**Note** also that this section isn't kept very up-to-date. Contributions welcome!
+**Note**: this section is not kept very up-to-date. Contributions welcome!
 
 ## -bs-main (single directory build)
 
@@ -16,51 +16,49 @@ All these flags can be passed into the `bsc-flags` section of `bsb` (though some
 bsc -bs-main Main
 ```
 
-`bsc` will build module `Main` and all its dependencies. When it finishes, it'll run `node main.js`.
+The above tells `bsc` to build the module `Main` and all of its dependencies. When it finishes, it will run `node main.js`.
 
 ```sh
 bsc -c -bs-main Main
 ```
 
-Same as above, but will not run `node`.
+Same as above, but it will not run `node`.
 
 ## -bs-files
-
-So that you can do
 
 ```sh
 bsc -c -bs-files *.ml *.mli
 ```
 
-the compiler will sort the order of input files before starting compilation.
+The above option is available so that you can send a batch of files to the compiler. The compiler will sort the order of the input files before starting compilation.
 
 BuckleScript supports two compilation modes: script mode and package mode. In package mode, you have to provide `package.json` on top and set the options `-bs-package-name`, `-bs-package-output`. In script mode, such flags are not needed.
 
 ## -bs-package-name
 
-The name of your project. It's recommended to use the same `name` than the one in `package.json`.
+Use this option followed by the name of your project. It is recommended to use the same `name` as the one in `package.json`.
 
 ## -bs-packge-output
 
-Configure the output module system. The format is `module_system:output/path/relative/to/package.json`.
+This option allows you to configure the output path for a specific module system. The format is `module_system:output/path/relative/to/package.json`.
 
-Currently supported systesms are: `commonjs`, `amdjs` and `es6`.
+Currently supported module systems are: CommonJS, AMD and ES6.
 
-For example, when you want to use the `es6` module system:
+For example, when you want to use the ES6 module system, use the `es6` flag:
 
 ```sh
 bsc -bs-package-name your_package -bs-package-output es6:lib/es6 -c xx.ml
 ```
 
-**Note**: you can supply multiple `-bs-package-output` at once. For example:
+**Note**: you can supply multiple `-bs-package-output` flags at once. For example:
 
 ```sh
 bsc -bs-package-name name -bs-package-output commonjs:lib/js  -bs-package-output amdjs:lib/amdjs -c x.ml
 ```
 
-It'll generate `x.js` in `lib/js` as a commonjs module, `lib/amdjs` as an amdjs module at the same time.
+The above will generate `x.js` in `lib/js` as a CommonJS module and `lib/amdjs` as an AMD module at the same time.
 
-You would then need a bundler for the different module systems: webpack supports `commonjs` and `amdjs`, rollup supports es6, while google closure compiler supports all.
+You would then need a bundler for the different module systems: webpack supports CommonJS and AMD, rollup supports ES6, while google closure compiler supports all three.
 
 ## -bs-no-warn-ffi-type
 
@@ -99,11 +97,11 @@ console.log("hello");
 
 In conjunction with `-bs-eval`: the first block is the output of `-dparsetree`, the second is from `-drawlambda`.
 
-`-bs-eval` doesn't create intermediate file. Useful for learning or troubleshooting.
+`-bs-eval` does not create intermediate files. It is useful for learning and/or troubleshooting.
 
 ## -bs-no-builtin-ppx-ml, -bs-no-builtin-ppx-mli
 
-If you don't use any BS-specific annotations, you can explicitly turn it off. Another use-case is to use `-ppx` explicitly as below:
+If you do not use any BS-specific annotations, you can explicitly turn them off. Another use-case is to use `-ppx` explicitly as below:
 
 ```sh
 bsc -c -ppx bsppx.exe -bs-no-builtin-ppx-ml c.ml
@@ -111,7 +109,7 @@ bsc -c -ppx bsppx.exe -bs-no-builtin-ppx-ml c.ml
 
 ## -bs-no-version-header
 
-Don’t print BS version at the beginning of each JS file.
+Do not print the BS version at the beginning of each JS file.
 
 ## -bs-g (Experimental, since @3.1.0)
 
