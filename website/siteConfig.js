@@ -77,6 +77,8 @@ const examples = [
   }
 ]
 
+let reasonHighlightJs = require('reason-highlightjs');
+
 const siteConfig = {
   title: "BuckleScript",
   tagline: "Write safer and simpler code in OCaml & Reason, and compile it to JavaScript.",
